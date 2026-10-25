@@ -9,11 +9,11 @@ PATTERNS = {
     "snils": r"^\d{11}$",
     "passport": r"^\d{2} \d{2} \d{6}$",
     "occupation": r"^[A-Za-zА-Яа-яЁё\s-]+$",
-    "longitude": r"^-?\d{1,3}\.\d+$",
+    "longitude": r"^-?(?:180(?:\.0+)?|(?:1[0-7]\d|[1-9]?\d)\.\d+)$",
     "hex_color": r"^#[0-9a-fA-F]{6}$",
     "issn": r"^\d{4}-\d{4}$",
     "locale_code": r"^[a-z]{2}(-[a-z]{2})?$",
-    "time": r"^\d{2}:\d{2}:\d{2}\.\d{6}$"
+    "time": r"^(?:[01]\d|2[0-3]):[0-5]\d:[0-5]\d\.\d{6}$"
 }
 
 def validate_row(row: dict) -> list:
