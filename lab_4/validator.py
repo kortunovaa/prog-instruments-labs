@@ -1,5 +1,6 @@
 import csv
 import re
+import argparse
 from checksum import calculate_checksum, serialize_result
 
 class CSVValidator:
@@ -42,14 +43,24 @@ class CSVValidator:
 
 
 def main():
-    validator = CSVValidator(file_path="11.csv")
+    parser = argparse.ArgumentParser(description="Утилита для валидации CSV-файлов.")
+    parser.add_argument("file", nargs='?', default="11.csv", help="Путь к CSV файлу (по умолчанию 11.csv)")
+    parser.add_argument("--encoding", default="utf-16", help="Кодировка файла (по умолчанию utf-16)")
+    parser.add_argument("--delimiter", default=";", help="Разделитель (по умолчанию ;)")
+    parser.add_argument("--variant", type=int, default=11, help="Номер варианта (по умолчанию 11)")
+    
+    args = parser.parse_args()
+
+    validator = CSVValidator(file_path=args.file, encoding=args.encoding, delimiter=args.delimiter)
+    
     invalid_rows = validator.find_invalid_rows()
     
     checksum = calculate_checksum(invalid_rows)
+    print(f"Файл: {args.file}")
     print(f"Найдено невалидных строк: {len(invalid_rows)}")
     print(f"Контрольная сумма: {checksum}")
     
-    serialize_result(variant=11, checksum=checksum)
+    serialize_result(variant=args.variant, checksum=checksum)
 
 if __name__ == "__main__":
     main()
