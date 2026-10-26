@@ -34,11 +34,19 @@ class CSVValidator:
     def find_invalid_rows(self) -> list:
         """Читает файл и возвращает список индексов невалидных строк."""
         invalid_rows = []
-        with open(self.file_path, "r", encoding=self.encoding) as f:
-            reader = csv.DictReader(f, delimiter=self.delimiter)
-            for idx, row in enumerate(reader):
-                if not self._is_row_valid(row):
-                    invalid_rows.append(idx)
+        try:
+            with open(self.file_path, "r", encoding=self.encoding) as f:
+                reader = csv.DictReader(f, delimiter=self.delimiter)
+                for idx, row in enumerate(reader):
+                    if not self._is_row_valid(row):
+                        invalid_rows.append(idx)
+        except FileNotFoundError:
+            print(f"Ошибка: Файл '{self.file_path}' не найден.")
+            return []
+        except UnicodeDecodeError:
+            print(f"Ошибка: Не удалось прочитать файл в кодировке {self.encoding}.")
+            return []
+        
         return invalid_rows
 
 
